@@ -34,18 +34,19 @@ let screen = {
 async function getRecipesOfCategory(category) {
     screen.main.querySelector(".recipe-list").innerHTML = "";
 
-    try {let res = await fetch(url + "filter.php?c=" + category);
+    try {
+        let res = await fetch(url + "filter.php?c=" + category);
         let data = await res.json();
         let recipes = data.meals;
 
         for (let i = 0; i < recipes.length; i++) {
             let div = document.createElement("div");
+
             div.classList.add("item");
+
             div.addEventListener("click", function() {
                 showFullRecipe(recipes[i].idMeal);
             });
-
-            console.log(recipes);
 
             div.innerHTML = `
                 <div class="thumbnail">
@@ -57,6 +58,50 @@ async function getRecipesOfCategory(category) {
             `;
 
             screen.main.querySelector(".recipe-list").appendChild(div);
+        }
+    } catch (msg) {
+        
+    }
+}
+
+async function showFullRecipe(recipeId) {
+    screen.main.classList.add("hidden");
+    screen.recipe.classList.remove("hidden");
+
+    screen.recipe.querySelector(".back-btn").addEventListener("click", function() {
+        screen.recipe.classList.add("hidden");
+        screen.main.classList.remove("hidden");
+        screen.recipe.querySelector(".thumbnail img").src = "";
+        screen.recipe.querySelector(".details h2").innerText = "";
+        screen.recipe.querySelector(".details ul").innerHTML = "";
+        screen.recipe.querySelector(".details ol").innerHTML = "";
+    });
+
+    try {
+        let res = await fetch(url + "lookup.php?i=" + recipeId);
+        let data = await res.json();
+        let recipe = data.meals[0];
+
+        screen.recipe.querySelector(".thumbnail img").src = recipe.strMealThumb;
+        screen.recipe.querySelector(".details h2").innerText = recipe.strMeal;
+
+        for (let i = 1; i <= 20; i++) {
+            if (recipe["strIngredient" + i].length == 0) {
+                break;
+            }
+
+            let li = document.createElement("li");
+            li.innerText = recipe["strIngredient" + i] + " - " + recipe["strMeasure" + i];
+            
+            screen.recipe.querySelector(".details ul").appendChild(li);
+        }
+
+        let instruct = recipe.strInstructions.split("\r\n").filter(v => v);
+
+        for (let i = 0; i < instruct.length; i++) {
+            let li = document.createElement("li");
+            li.innerText = instruct[i];
+            screen.recipe.querySelector(".details ol").appendChild(li);
         }
     } catch (msg) {
         
