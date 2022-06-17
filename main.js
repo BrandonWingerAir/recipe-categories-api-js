@@ -6,6 +6,7 @@ let screen = {
     recipe:app.querySelector(".recipe-screen")
 };
 
+// List Categories
 (async function() {
     let res = await fetch(url + "list.php?c=list");
     let data = await res.json();
@@ -31,6 +32,7 @@ let screen = {
     } 
 })();
 
+// Category Details
 async function getRecipesOfCategory(category) {
     screen.main.querySelector(".recipe-list").innerHTML = "";
 
@@ -64,6 +66,7 @@ async function getRecipesOfCategory(category) {
     }
 }
 
+// Recipe Details
 async function showFullRecipe(recipeId) {
     screen.main.classList.add("hidden");
     screen.recipe.classList.remove("hidden");

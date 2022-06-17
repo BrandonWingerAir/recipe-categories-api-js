@@ -61,6 +61,7 @@ body {
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
+    text-align: center;
 }
 
 .main-screen .categories > div.active {
@@ -159,4 +160,32 @@ body {
 .recipe-screen .details > div ol,
 .recipe-screen .details > div ul {
     padding: 10px 20px;
+}
+
+@media screen and (min-width: 550px) {
+    .app {
+        max-width: 100%;
+    }
+
+    .main-screen .logo {
+        font-size: 22px;
+    }
+
+    .main-screen .categories {
+        padding: 40px 80px 20px;
+    }
+
+    .main-screen .recipe-list {
+        padding: 20px 60px 60px;
+        gap: 20px;
+    }
+
+    .main-screen .recipe-list > .item {
+        border: 1px solid #485b6b;
+        width: calc(calc(100% / 3) - 20px);
+    }
+
+    .main-screen .recipe-list > .item:hover {
+        cursor: pointer;
+    }
 }
